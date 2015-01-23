@@ -1,15 +1,15 @@
 # Haml
-guard :haml do
+guard :haml, input: '.', output: '_site/' do
   watch(/^.+(\.html\.haml)$/)
 end
 
 # Sass
-guard :sass, input: 'assets/css'
+guard :sass, input: 'assets/css', output: '_site/assets/css'
 
 # CoffeeScript
 coffeescript_options = {
   input: 'assets/js',
-  output: 'assets/js',
+  output: '_site/assets/js',
   patterns: [%r{^assets/js/(.+\.js\.coffee)$}]
 }
 
