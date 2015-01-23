@@ -1,18 +1,3 @@
-require 'bundler/setup'
-
-desc 'Initialize a shower room for you'
-task :init do
-  system 'bundle install'
-  system 'git submodule init'
-  system 'git submodule update'
-end
-
-desc 'Generate a new slide'
-task :new do
-  if name = ARGV[1]
-    system "touch assets/css/#{name}.css.scss"
-    system "touch assets/js/#{name}.js.coffee"
-    haml = <<-END_OF_DOC
 !!!5
 %html{lang: 'en'}
   %head
@@ -21,7 +6,7 @@ task :new do
     %meta{name: 'viewport', content: 'width=792, user-scalable=no'}
     %meta{'http-equiv' => 'x-ua-compatible', content: 'ie=edge'}
     %link{rel: 'stylesheet', href: 'vendor/shower-themes/ribbon/styles/screen.css'}
-    %link{rel: 'stylesheet', href: 'assets/css/#{name}.css'}
+    %link{rel: 'stylesheet', href: 'assets/css/demo.css'}
 
   %body.list
     %header.caption
@@ -30,8 +15,20 @@ task :new do
 
     %section#Cover.slide.cover
       %div
-        %h2 Title
-        %p Add content here...
+        %h2 Shower Presentation Engine
+        %p Brought to you by <a href="http://pepelsbey.net">Vadim Makeev</a>
+        %img{src: 'https://raw.githubusercontent.com/shower/shower/master/pictures/cover.jpg', alt:''}
+
+    %section.slide
+      %div
+        %h2 Shower Key Features
+        %ol
+          %li Built on HTML, CSS and vanilla JavaScript
+          %li All modern browsers are supported
+          %li Slide themes are separated from engine
+          %li Fully keyboard accessible
+          %li Printable to PDF
+        %p.note Shower ['ʃəuə] noun. A person or thing that shows.
 
     %p.badge
       %a{href: 'https://github.com/shower/shower'} Fork me on Github
@@ -43,16 +40,4 @@ task :new do
       %div
 
     %script{src: 'vendor/shower-core/shower.min.js'}
-    %script{src: 'assets/js/#{name}.js'}
-    END_OF_DOC
-    File.open("#{name}.html.haml", 'w').puts haml
-  else
-    puts "Usage: rake new slide_name"
-  end
-  exit
-end
-
-desc 'Guard while you are showering'
-task :guard do
-  system 'bundle exec guard'
-end
+    %script{src: 'assets/js/demo.js'}
