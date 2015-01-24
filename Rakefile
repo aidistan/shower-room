@@ -22,11 +22,11 @@ desc 'Guard while you are showering'
 task :guard do
   require 'fileutils'
   %w{
-    vendor/shower-core/shower.min.js
-    vendor/shower-themes/bright/fonts
-    vendor/shower-themes/bright/styles/screen.css
-    vendor/shower-themes/ribbon/fonts
-    vendor/shower-themes/ribbon/styles/screen.css
+    vendor/shower/core/shower.min.js
+    vendor/shower/bright/fonts
+    vendor/shower/bright/styles/screen.css
+    vendor/shower/ribbon/fonts
+    vendor/shower/ribbon/styles/screen.css
   }.each do |src|
     dst = '_site/' + File.dirname(src)
     FileUtils.mkdir_p dst
@@ -53,7 +53,7 @@ def slide_haml_template(name)
     %meta{charset: 'utf-8'}
     %meta{name: 'viewport', content: 'width=792, user-scalable=no'}
     %meta{'http-equiv' => 'x-ua-compatible', content: 'ie=edge'}
-    %link{rel: 'stylesheet', href: 'vendor/shower-themes/ribbon/styles/screen.css'}
+    %link{rel: 'stylesheet', href: 'vendor/shower/bright/styles/screen.css'}
     %link{rel: 'stylesheet', href: 'assets/css/#{name}.css'}
 
   %body.list
@@ -75,7 +75,7 @@ def slide_haml_template(name)
     .progress
       %div
 
-    %script{src: 'vendor/shower-core/shower.min.js'}
+    %script{src: 'vendor/shower/core/shower.min.js'}
     %script{src: 'assets/js/#{name}.js'}
   END_OF_DOC
 end
