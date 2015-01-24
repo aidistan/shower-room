@@ -1,8 +1,7 @@
 require 'bundler/setup'
 
-desc 'Initialize a shower room for you'
+desc 'Initialize the shower room for you'
 task :init do
-  system 'bundle install'
   system 'git submodule init'
   system 'git submodule update'
 end
