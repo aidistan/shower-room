@@ -143,7 +143,7 @@ module.exports = (grunt) ->
       """
       grunt.log.writeln "successfully create #{slide}.html.haml"
 
-  grunt.registerTask 'destroy', 'Destroy a slide using "grunt generate:my-slide"', (slide) ->
+  grunt.registerTask 'destroy', 'Destroy a slide using "grunt destroy:my-slide"', (slide) ->
     if arguments.length == 0
       grunt.log.error "no arg given"
     else
