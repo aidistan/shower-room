@@ -98,7 +98,66 @@ module.exports = (grunt) ->
           port: 4000
           base: '<%= cfg.dist %>'
 
-  grunt.registerTask('build', ['clean', 'copy', 'sass', 'coffee', 'uglify', 'haml']);
-  grunt.registerTask('serve', ['build', 'connect', 'watch']);
+  grunt.registerTask 'generate', 'Generate a slide using "grunt generate:my-slide"', (slide) ->
+    if arguments.length == 0
+      grunt.log.error "no arg given"
+    else
+      fs = require('fs')
+      for file in ["assets/css/#{slide}.css.scss", "assets/js/#{slide}.js.coffee"]
+        fs.writeFileSync(file, '')
+        grunt.log.writeln "successfully create #{file}"
+      fs.writeFileSync "#{slide}.html.haml", """
+!!!5
+%html{lang: 'en'}
+  %head
+    %title Your slide title
 
-  grunt.registerTask('default', 'build');
+    %meta{charset: 'utf-8'}
+    %meta{name: 'viewport', content: 'width=792, user-scalable=no'}
+    %meta{'http-equiv' => 'x-ua-compatible', content: 'ie=edge'}
+    %link{rel: 'stylesheet', href: 'vendor/shower/ribbon/styles/screen.css'}
+    %link{rel: 'stylesheet', href: 'assets/css/#{slide}.css'}
+
+  %body.list
+    %header.caption
+      %h1 Your slide title
+      %p Your name or date
+
+    %section.slide
+      %div
+        %h2 Your slide title
+        %p Add your content here...
+
+    %p.badge
+      %a{href: 'https://github.com/shower/shower'} Fork me on Github
+
+    /
+      To hide progress bar from entire presentation
+      just remove “progress” element.
+    .progress
+      %div
+
+    %script{src: 'vendor/shower/core/shower.min.js'}
+    %script{src: 'assets/js/#{slide}.js'}
+
+      """
+      grunt.log.writeln "successfully create #{slide}.html.haml"
+
+  grunt.registerTask 'destroy', 'Destroy a slide using "grunt generate:my-slide"', (slide) ->
+    if arguments.length == 0
+      grunt.log.error "no arg given"
+    else
+      fs = require('fs')
+      for file in [
+        "#{slide}.html.haml"
+        "assets/css/#{slide}.css.scss"
+        "assets/js/#{slide}.js.coffee"
+      ]
+        if fs.existsSync(file)
+          fs.unlinkSync(file)
+          grunt.log.writeln "successfully deleted #{file}"
+
+  grunt.registerTask 'build', 'Build all slides', ['clean', 'copy', 'sass', 'coffee', 'uglify', 'haml']
+  grunt.registerTask 'serve', 'Serve, watch and live-reload all slides', ['build', 'connect', 'watch']
+
+  grunt.registerTask 'default', 'build'
