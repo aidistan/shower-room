@@ -8,9 +8,10 @@ module.exports = (grunt) ->
 
   grunt.initConfig
     cfg:
-      dest: '_site'
+      dist: '_site'
     pkg: grunt.file.readJSON('package.json')
-    clean: ['<%= cfg.dest %>']
+    clean:
+      dist: ['<%= cfg.dist %>']
     sass:
       dist:
         options:
@@ -20,7 +21,7 @@ module.exports = (grunt) ->
           expand: true,
           cwd: 'assets/css'
           src: ['*.scss']
-          dest: '<%= cfg.dest %>/assets/css'
+          dest: '<%= cfg.dist %>/assets/css'
           ext: '.css'
         ]
     coffee:
@@ -29,16 +30,16 @@ module.exports = (grunt) ->
           expand: true,
           cwd: 'assets/js',
           src: ['*.coffee'],
-          dest: '<%= cfg.dest %>/assets/js',
+          dest: '<%= cfg.dist %>/assets/js',
           ext: '.js'
         ]
     uglify:
       dist:
         files: [
           expand: true,
-          cwd: '<%= cfg.dest %>/assets/js',
+          cwd: '<%= cfg.dist %>/assets/js',
           src: '*.js',
-          dest: '<%= cfg.dest %>/assets/js'
+          dest: '<%= cfg.dist %>/assets/js'
         ]
     haml:
       dist:
@@ -46,7 +47,7 @@ module.exports = (grunt) ->
           expand: true,
           cwd: '.'
           src: ['*.haml']
-          dest: '<%= cfg.dest %>'
+          dest: '<%= cfg.dist %>'
           ext: '.html'
         ]
     copy:
@@ -55,15 +56,15 @@ module.exports = (grunt) ->
           expand: true
           cwd: 'assets/'
           src: ['**', '!css/*.scss', '!js/*.coffee']
-          dest: '<%= cfg.dest %>/assets'
+          dest: '<%= cfg.dist %>/assets'
         ]
-      vendor:
+      shower:
         files: [
-           {src: 'vendor/shower/core/shower.min.js', dest: '<%= cfg.dest %>/vendor/shower/core/shower.min.js'},
-           {src: 'vendor/shower/ribbon/styles/screen.css', dest: '<%= cfg.dest %>/vendor/shower/ribbon/styles/screen.css'},
-           {src: 'vendor/shower/bright/styles/screen.css', dest: '<%= cfg.dest %>/vendor/shower/bright/styles/screen.css'},
-           {expand: true, src: ['vendor/shower/bright/fonts/*'], dest: '<%= cfg.dest %>', filter: 'isFile'},
-           {expand: true, src: ['vendor/shower/ribbon/fonts/*'], dest: '<%= cfg.dest %>', filter: 'isFile'},
+           {src: 'vendor/shower/core/shower.min.js', dest: '<%= cfg.dist %>/vendor/shower/core/shower.min.js'},
+           {src: 'vendor/shower/ribbon/styles/screen.css', dest: '<%= cfg.dist %>/vendor/shower/ribbon/styles/screen.css'},
+           {src: 'vendor/shower/bright/styles/screen.css', dest: '<%= cfg.dist %>/vendor/shower/bright/styles/screen.css'},
+           {expand: true, src: ['vendor/shower/bright/fonts/*'], dest: '<%= cfg.dist %>', filter: 'isFile'},
+           {expand: true, src: ['vendor/shower/ribbon/fonts/*'], dest: '<%= cfg.dist %>', filter: 'isFile'},
         ]
     watch:
       options: {
@@ -81,7 +82,7 @@ module.exports = (grunt) ->
       assets:
         files: ['assets/**/*', '!assets/css/*.scss', '!assets/js/*.coffee']
         tasks: ['copy:assets']
-      vendor:
+      shower:
         files: [
           'vendor/shower/core/shower.min.js'
           'vendor/shower/bright/fonts/*'
@@ -95,7 +96,7 @@ module.exports = (grunt) ->
         options:
           livereload: true
           port: 4000
-          base: '<%= cfg.dest %>'
+          base: '<%= cfg.dist %>'
 
   grunt.registerTask('build', ['clean', 'copy', 'sass', 'coffee', 'uglify', 'haml']);
   grunt.registerTask('serve', ['build', 'connect', 'watch']);
