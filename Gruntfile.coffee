@@ -1,10 +1,10 @@
 module.exports = (grunt) ->
 
   # Load grunt tasks automatically
-  require('load-grunt-tasks')(grunt);
+  require('load-grunt-tasks')(grunt)
 
   # Time how long tasks take. Can help when optimizing build times
-  require('time-grunt')(grunt);
+  require('time-grunt')(grunt)
 
   grunt.initConfig
     cfg:
@@ -60,11 +60,30 @@ module.exports = (grunt) ->
         ]
       shower:
         files: [
-           {src: 'vendor/shower/core/shower.min.js', dest: '<%= cfg.dist %>/vendor/shower/core/shower.min.js'},
-           {src: 'vendor/shower/ribbon/styles/screen.css', dest: '<%= cfg.dist %>/vendor/shower/ribbon/styles/screen.css'},
-           {src: 'vendor/shower/bright/styles/screen.css', dest: '<%= cfg.dist %>/vendor/shower/bright/styles/screen.css'},
-           {expand: true, src: ['vendor/shower/bright/fonts/*'], dest: '<%= cfg.dist %>', filter: 'isFile'},
-           {expand: true, src: ['vendor/shower/ribbon/fonts/*'], dest: '<%= cfg.dist %>', filter: 'isFile'},
+          {
+            src: 'vendor/shower/core/shower.min.js'
+            dest: '<%= cfg.dist %>/vendor/shower/core/shower.min.js'
+          },
+          {
+            src: 'vendor/shower/ribbon/styles/screen.css'
+            dest: '<%= cfg.dist %>/vendor/shower/ribbon/styles/screen.css'
+          }
+          {
+            src: 'vendor/shower/bright/styles/screen.css'
+            dest: '<%= cfg.dist %>/vendor/shower/bright/styles/screen.css'
+          }
+          {
+            expand: true
+            src: ['vendor/shower/bright/fonts/*']
+            dest: '<%= cfg.dist %>'
+            filter: 'isFile'
+          }
+          {
+            expand: true
+            src: ['vendor/shower/ribbon/fonts/*']
+            dest: '<%= cfg.dist %>'
+            filter: 'isFile'
+          }
         ]
     watch:
       options: {
@@ -98,15 +117,19 @@ module.exports = (grunt) ->
           port: 4000
           base: '<%= cfg.dist %>'
 
-  grunt.registerTask 'generate', 'Generate a slide using "grunt generate:my-slide"', (slide) ->
-    if arguments.length == 0
-      grunt.log.error "no arg given"
-    else
-      fs = require('fs')
-      for file in ["assets/css/#{slide}.css.scss", "assets/js/#{slide}.js.coffee"]
-        fs.writeFileSync(file, '')
-        grunt.log.writeln "successfully create #{file}"
-      fs.writeFileSync "#{slide}.html.haml", """
+  grunt.registerTask 'generate',
+    'Generate a slide using "grunt generate:my-slide"', (slide) ->
+      if arguments.length == 0
+        grunt.log.error "no arg given"
+      else
+        fs = require('fs')
+        for file in [
+          "assets/css/#{slide}.css.scss"
+          "assets/js/#{slide}.js.coffee"
+        ]
+          fs.writeFileSync(file, '')
+          grunt.log.writeln "successfully create #{file}"
+        fs.writeFileSync "#{slide}.html.haml", """
 !!!5
 %html{lang: 'en'}
   %head
@@ -140,24 +163,27 @@ module.exports = (grunt) ->
     %script{src: 'vendor/shower/core/shower.min.js'}
     %script{src: 'assets/js/#{slide}.js'}
 
-      """
-      grunt.log.writeln "successfully create #{slide}.html.haml"
+        """
+        grunt.log.writeln "successfully create #{slide}.html.haml"
 
-  grunt.registerTask 'destroy', 'Destroy a slide using "grunt destroy:my-slide"', (slide) ->
-    if arguments.length == 0
-      grunt.log.error "no arg given"
-    else
-      fs = require('fs')
-      for file in [
-        "#{slide}.html.haml"
-        "assets/css/#{slide}.css.scss"
-        "assets/js/#{slide}.js.coffee"
-      ]
-        if fs.existsSync(file)
-          fs.unlinkSync(file)
-          grunt.log.writeln "successfully deleted #{file}"
+  grunt.registerTask 'destroy',
+    'Destroy a slide using "grunt destroy:my-slide"', (slide) ->
+      if arguments.length == 0
+        grunt.log.error "no arg given"
+      else
+        fs = require('fs')
+        for file in [
+          "#{slide}.html.haml"
+          "assets/css/#{slide}.css.scss"
+          "assets/js/#{slide}.js.coffee"
+        ]
+          if fs.existsSync(file)
+            fs.unlinkSync(file)
+            grunt.log.writeln "successfully deleted #{file}"
 
-  grunt.registerTask 'build', 'Build all slides', ['clean', 'copy', 'sass', 'coffee', 'uglify', 'haml']
-  grunt.registerTask 'serve', 'Serve, watch and live-reload all slides', ['build', 'connect', 'watch']
+  grunt.registerTask 'build', 'Build all slides',
+    ['clean', 'copy', 'sass', 'coffee', 'uglify', 'haml']
+  grunt.registerTask 'serve', 'Serve, watch and live-reload all slides',
+    ['build', 'connect', 'watch']
 
   grunt.registerTask 'default', 'build'
