@@ -1,6 +1,6 @@
 # Shower Room
 
-A ready-to-use Shower workplace for rubyists.
+A ready-to-use Shower workplace.
 
 ## Get started
 
@@ -10,10 +10,9 @@ git clone https://github.com/aidistan/shower-room.git
 cd shower-room
 
 # Install dependencies
-bundle install
-# Initialize the room
-rake init
+git submodule update --init
+npm install
 
-# Create and view your slides with Rake's help
-...
+# Start to create
+grunt serve
 ```

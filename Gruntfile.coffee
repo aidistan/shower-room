@@ -100,7 +100,4 @@ module.exports = (grunt) ->
   grunt.registerTask('build', ['clean', 'copy', 'sass', 'coffee', 'uglify', 'haml']);
   grunt.registerTask('serve', ['build', 'connect', 'watch']);
 
-  grunt.registerTask('b', 'build');
-  grunt.registerTask('s', 'serve');
-
   grunt.registerTask('default', 'build');
