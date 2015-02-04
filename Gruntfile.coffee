@@ -86,9 +86,8 @@ module.exports = (grunt) ->
           }
         ]
     watch:
-      options: {
-        livereload: true,
-      },
+      options:
+        livereload: true
       css:
         files: ['assets/css/*.scss']
         tasks: ['sass']
