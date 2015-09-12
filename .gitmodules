@@ -7,3 +7,6 @@
 [submodule "shower/ribbon"]
 	path = vendor/shower/ribbon
 	url = git@github.com:shower/ribbon.git
+[submodule "shower/material"]
+	path = vendor/shower/material
+	url = git@github.com:shower/material.git
