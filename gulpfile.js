@@ -1,7 +1,7 @@
 var gulp   = require('gulp');
-var clean  = require('gulp-clean');
 var coffee = require('gulp-coffee');
 var rename = require('gulp-rename');
+var rimraf = require('gulp-rimraf');
 var haml   = require('gulp-ruby-haml');
 var sass   = require('gulp-sass');
 var uglify = require('gulp-uglify');
@@ -19,7 +19,7 @@ gulp.dst = function(path) { return gulp.dest('_site/' + (path || '')); };
 */
 
 gulp.task('clean', function() {
-  return gulp.src('_site', { read: false }).pipe(clean());
+  return gulp.src('_site', { read: false }).pipe(rimraf());
 });
 
 gulp.task('build', ['haml', 'coffee', 'sass', 'assets', 'vendor']);
