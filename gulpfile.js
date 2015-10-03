@@ -18,41 +18,42 @@ gulp.dst = function(path) { return gulp.dest('_site/' + (path || '')); };
   Main tasks
 */
 
-gulp.task('clean', function() {
-  return gulp.src('_site', { read: false }).pipe(rimraf());
-});
-
-gulp.task('build', ['haml', 'coffee', 'sass', 'assets', 'vendor']);
+gulp.task('default', ['clean', 'haml', 'coffee', 'sass', 'assets', 'vendor']);
 
 /*
   Atom tasks
 */
 
-gulp.task('haml', function() {
+gulp.task('clean', function() {
+  return gulp.src('_site', { read: false })
+    .pipe(rimraf());
+});
+
+gulp.task('haml', ['clean'], function() {
   return gulp.src('*.haml')
     .pipe(haml())
     .pipe(gulp.dst());
 });
 
-gulp.task('coffee', function() {
+gulp.task('coffee', ['clean'], function() {
   return gulp.src('assets/js/*.coffee')
     .pipe(coffee().on('error', gutil.log))
     .pipe(uglify())
     .pipe(gulp.dst('assets/js'));
 });
 
-gulp.task('sass', function() {
+gulp.task('sass', ['clean'], function() {
   return gulp.src('assets/css/*.scss')
     .pipe(sass({ outputStyle: 'compressed' }).on('error', gutil.log))
     .pipe(gulp.dst('assets/css'));
 });
 
-gulp.task('assets', function() {
+gulp.task('assets', ['clean'], function() {
   return gulp.src(['assets/**', '!assets/css/*.scss', '!assets/js/*.coffee'])
     .pipe(gulp.dst('assets/'));
 });
 
-gulp.task('vendor', function() {
+gulp.task('vendor', ['clean'], function() {
   return merge(
     gulp.src('vendor/shower/core/shower.min.js')
       .pipe(rename({ dirname: 'js' })),
