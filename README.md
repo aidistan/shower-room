@@ -6,11 +6,11 @@ A ready-to-use Shower workplace.
 
 ```bash
 # Clone the repo
-git clone https://github.com/aidistan/shower-room.git
+git clone https://github.com/aidistan/shower-room.git --recursive
 cd shower-room
 
 # Install dependencies
-git submodule update --init
+npm install -g grunt-cli gulp
 npm install
 
 # Start to create
