@@ -7,81 +7,71 @@ module.exports = (grunt) ->
   require('time-grunt')(grunt)
 
   grunt.initConfig
-    cfg:
-      dist: '_site'
+    dist: '_site'
     pkg: grunt.file.readJSON('package.json')
-    clean:
-      dist: ['<%= cfg.dist %>']
+    clean: ['<%= dist %>']
     sass:
-      dist:
-        options:
-          sourcemap: 'none'
-          style: 'compressed'
-        files: [
-          expand: true,
-          cwd: 'assets/css'
-          src: ['*.scss']
-          dest: '<%= cfg.dist %>/assets/css'
-          ext: '.css'
-        ]
+      options:
+        sourcemap: 'none'
+        style: 'compressed'
+      site:
+        expand: true,
+        cwd: 'assets/css'
+        src: ['*.scss']
+        dest: '<%= dist %>/assets/css'
+        ext: '.css'
     coffee:
-      dist:
-        files: [
-          expand: true,
-          cwd: 'assets/js',
-          src: ['*.coffee'],
-          dest: '<%= cfg.dist %>/assets/js',
-          ext: '.js'
-        ]
+      site:
+        expand: true,
+        cwd: 'assets/js',
+        src: ['*.coffee'],
+        dest: '<%= dist %>/assets/js',
+        ext: '.js'
     uglify:
-      dist:
-        files: [
-          expand: true,
-          cwd: '<%= cfg.dist %>/assets/js',
-          src: '*.js',
-          dest: '<%= cfg.dist %>/assets/js'
-        ]
+      site:
+        expand: true,
+        cwd: '<%= dist %>/assets/js',
+        src: '*.js',
+        dest: '<%= dist %>/assets/js'
     haml:
-      dist:
-        files: [
-          expand: true,
-          cwd: '.'
-          src: ['*.haml']
-          dest: '<%= cfg.dist %>'
-          ext: '.html'
-        ]
+      site:
+        expand: true,
+        cwd: '.'
+        src: ['*.haml']
+        dest: '<%= dist %>'
+        ext: '.html'
     copy:
       assets:
-        files: [
-          expand: true
-          cwd: 'assets/'
-          src: ['**', '!css/*.scss', '!js/*.coffee']
-          dest: '<%= cfg.dist %>/assets'
-        ]
+        expand: true
+        cwd: 'assets/'
+        src: ['**', '!css/*.scss', '!js/*.coffee']
+        dest: '<%= dist %>/assets'
       shower:
         files: [
           {
             src: 'vendor/shower/core/shower.min.js'
-            dest: '<%= cfg.dist %>/vendor/shower/core/shower.min.js'
+            dest: '<%= dist %>/assets/js/shower.min.js'
           },
           {
             src: 'vendor/shower/ribbon/styles/screen.css'
-            dest: '<%= cfg.dist %>/vendor/shower/ribbon/styles/screen.css'
+            dest: '<%= dist %>/assets/css/shower-ribbon.css'
           }
           {
             src: 'vendor/shower/bright/styles/screen.css'
-            dest: '<%= cfg.dist %>/vendor/shower/bright/styles/screen.css'
+            dest: '<%= dist %>/assets/css/shower-bright.css'
           }
           {
             expand: true
-            src: ['vendor/shower/bright/fonts/*']
-            dest: '<%= cfg.dist %>'
+            cwd: 'vendor/shower/bright/fonts/'
+            src: '**'
+            dest: '<%= dist %>/assets/fonts/'
             filter: 'isFile'
           }
           {
             expand: true
-            src: ['vendor/shower/ribbon/fonts/*']
-            dest: '<%= cfg.dist %>'
+            cwd: 'vendor/shower/ribbon/fonts/'
+            src: '**'
+            dest: '<%= dist %>/assets/fonts/'
             filter: 'isFile'
           }
         ]
@@ -106,7 +96,7 @@ module.exports = (grunt) ->
           'vendor/shower/bright/fonts/*'
           'vendor/shower/bright/styles/screen.css'
           'vendor/shower/ribbon/fonts/*'
-          'vendor/shower/ribbon/styles/screen.css]'
+          'vendor/shower/ribbon/styles/screen.css'
         ]
         tasks: ['copy:shower']
     connect:
@@ -114,7 +104,15 @@ module.exports = (grunt) ->
         options:
           livereload: true
           port: 4000
-          base: '<%= cfg.dist %>'
+          base: '<%= dist %>'
+
+  grunt.registerTask 'default', 'build'
+
+  grunt.registerTask 'build', 'Build all slides',
+    ['clean', 'copy', 'sass', 'coffee', 'uglify', 'haml']
+
+  grunt.registerTask 'serve', 'Serve, watch and live-reload all slides',
+    ['build', 'connect', 'watch']
 
   grunt.registerTask 'generate',
     'Generate a slide using "grunt generate:my-slide"', (slide) ->
@@ -137,7 +135,7 @@ module.exports = (grunt) ->
     %meta{charset: 'utf-8'}
     %meta{name: 'viewport', content: 'width=792, user-scalable=no'}
     %meta{'http-equiv' => 'x-ua-compatible', content: 'ie=edge'}
-    %link{rel: 'stylesheet', href: 'vendor/shower/ribbon/styles/screen.css'}
+    %link{rel: 'stylesheet', href: 'assets/css/shower-ribbon.css'}
     %link{rel: 'stylesheet', href: 'assets/css/#{slide}.css'}
 
   %body.list
@@ -159,7 +157,7 @@ module.exports = (grunt) ->
     .progress
       %div
 
-    %script{src: 'vendor/shower/core/shower.min.js'}
+    %script{src: 'assets/js/shower.min.js'}
     %script{src: 'assets/js/#{slide}.js'}
 
         """
@@ -179,10 +177,3 @@ module.exports = (grunt) ->
           if fs.existsSync(file)
             fs.unlinkSync(file)
             grunt.log.writeln "successfully deleted #{file}"
-
-  grunt.registerTask 'build', 'Build all slides',
-    ['clean', 'copy', 'sass', 'coffee', 'uglify', 'haml']
-  grunt.registerTask 'serve', 'Serve, watch and live-reload all slides',
-    ['build', 'connect', 'watch']
-
-  grunt.registerTask 'default', 'build'
