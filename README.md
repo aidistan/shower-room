@@ -1,4 +1,4 @@
-# Shower Room
+# Slide Template for Shower
 
 A ready-to-use Shower workplace.
 
@@ -6,8 +6,8 @@ A ready-to-use Shower workplace.
 
 ```bash
 # Clone the repo
-git clone https://github.com/aidistan/shower-room.git --recursive
-cd shower-room
+git clone https://github.com/aidistan/slide-template-shower.git --recursive
+cd slide-template-shower
 
 # Install dependencies
 npm install -g grunt-cli gulp
